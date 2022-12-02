@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbe:messageSchema xmlns:sbe="http://fixprotocol.io/2016/sbe"
+                   xmlns:xi="http://www.w3.org/2001/XInclude"
+                   package="baseline"
+                   id="1"
+                   version="0"
+                   semanticVersion="5.2"
+                   description="Example base schema which can be extended."
+                   byteOrder="littleEndian">
+    <types>
+        <composite name="messageHeader"
+          description="Message identifiers and length of message root.">
+            <type name="blockLength" primitiveType="uint16"/>
+            <type name="templateId" primitiveType="uint16"/>
+            <type name="schemaId" primitiveType="uint16"/>
+            <type name="version" primitiveType="uint16"/>
+        </composite>
+        <composite name="varStringEncoding" description="Variable length UTF-8 String.">
+            <type name="length" primitiveType="uint32" maxValue="1073741824"/>
+            <type name="varData" primitiveType="uint8" length="0" characterEncoding="UTF-8"/>
+        </composite>
+        <type name="Expiration" primitiveType="uint16"/>
+        <type name="Code" primitiveType="char" length="6" characterEncoding="ASCII"/>
+        <type name="someNumbers" primitiveType="uint32" length="4"/>
+        <type name="Percentage" primitiveType="int8" minValue="0" maxValue="25"/>
+        <enum name="BooleanType" encodingType="uint8" description="Boolean Type.">
+            <validValue name="F" description="False value representation.">0</validValue>
+            <validValue name="T" description="True value representation.">1</validValue>
+        </enum>
+        <enum name="Rating" encodingType="char">
+            <validValue name="A">A</validValue>
+            <validValue name="B">B</validValue>
+            <validValue name="C">C</validValue>
+        </enum>
+    </types>
+    <sbe:message name="Bond" id="1" description="Description of a basic Bond">
+        <field name="serialNumber" id="1" type="uint64"/>
+        <field name="expiration" id="2" type="Expiration"/>
+        <field name="available" id="3" type="BooleanType"/>
+        <field name="rating" id="4" type="Rating"/>
+        <field name="someNumbers" id="5" type="someNumbers"/>
+        <field name="code" id="6" type="Code"/>
+        <data name="desc" id="7" type="varStringEncoding"/>
+    </sbe:message>
+</sbe:messageSchema>
